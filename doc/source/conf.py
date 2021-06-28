@@ -7,12 +7,12 @@ import sys
 # -- Input to be updated for each new project --------------------------
 # Settings put here for convenience, this can be deleted if not 
 # all references to it in this file are removed. 
-tl_set = {# Name of python package, i.e. top level import <package_name>
-          'package': 'package_name',
+tl_set = {# Name of python package
+          'package': 'latex_utils',
           # Name of project (i.e. header in documentation)
-          'project': 'Name of the project',
+          'project': 'Latex utilities',
           # Name of authors
-          'author': 'authors',
+          'author': 'Knut Andreas Meyer',
           # Copyright year
           'copyyear': '2021',
           # Version
