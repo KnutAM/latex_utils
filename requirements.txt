@@ -1,0 +1,8 @@
+# Code requirements
+
+# Documentation
+sphinx>=1.0
+sphinx-rtd-theme
+
+# Testing
+pytest-cov>=2.0
