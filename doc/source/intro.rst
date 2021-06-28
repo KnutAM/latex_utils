@@ -10,7 +10,7 @@ Inclusion of graphics
 Inclusion of autodoc
 ====================
 
-.. automodule:: main
+.. automodule:: pgf
    :members:
    :undoc-members:
 
