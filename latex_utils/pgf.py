@@ -30,11 +30,13 @@ def reduce_datafile(filename, tol):
 def reduce_data(data, tol):
     data_red = []
     data_red.append(data[0])
+    i_saved = 0
     sfac = np.array([d[-1] - d[0] for d in np.transpose(data)])
     for i in range(1,data.shape[0]-1):
-        err = get_error(data_red[-1], data[i], data[i+1], sfac)
+        err = sum([get_error(data_red[-1], d, data[i+1], sfac) for d in data[i_saved:(i+1)]])
         if err > tol:
             data_red.append(data[i])
+            i_saved = i
     data_red.append(data[-1])
     
     return np.array(data_red)
