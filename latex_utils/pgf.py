@@ -33,7 +33,7 @@ def reduce_data(data, tol):
     i_saved = 0
     sfac = np.array([d[-1] - d[0] for d in np.transpose(data)])
     for i in range(1,data.shape[0]-1):
-        err = sum([get_error(data_red[-1], d, data[i+1], sfac) for d in data[i_saved:(i+1)]])
+        err = get_error(data_red[-1], data[i_saved:(i+1)], data[i+1], sfac)
         if err > tol:
             data_red.append(data[i])
             i_saved = i
@@ -42,17 +42,37 @@ def reduce_data(data, tol):
     return np.array(data_red)
 
 
-def get_error(d0, di, d1, sfac):
-    # Calculate error of point di when interpolating between d0 and d1.
+def get_error(p0, pts, p1, sfac):
+    """ Calculate position error of pts when interpolating between p0 and p1.
+
+    :param p0: Coordinates of first point (length=dim)
+    :type p0: np.array
+
+    :param pts: Coordinates of intermediate points, (shape = (npts, dim))
+    :type pts: np.array
+
+    :param p1: Coordinates of second point (length=dim)
+    :type p1: np.array
+
+    :param sfac: Scaling factor for each dimension (length=dim)
+    :type sfac: np.array
+
+    :return: max error
+    :rtype: float
+
+    """
+    #
     # Scale each coordinate by corresponding element in sfac 
     
     # Get scaled vectors
-    vi = (di - d0)/sfac
-    v1 = (d1 - d0)/sfac
-    
-    # Determine error vectors
-    v1hat = v1/np.linalg.norm(v1)
-    s = np.dot(vi, v1hat) * v1hat
-    e = vi - s
-    
-    return np.linalg.norm(e)
+    v1 = (p1 - p0)/sfac
+    v1hat = v1 / np.linalg.norm(v1)
+
+    # Vector from p0 to pts
+    vis = np.array([(pi - p0) / sfac for pi in pts])
+
+    # Error vectors
+    error_vectors = np.outer(vis @ v1hat, v1hat) - vis
+
+    # Return max error vector
+    return np.max([np.linalg.norm(ev) for ev in error_vectors])
